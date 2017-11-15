@@ -16,7 +16,14 @@ namespace Caroto
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            if (Properties.Settings.Default.IsActivated)
+            {
+
+            }
+            else
+            {
+                Application.Run(new InitialForm());
+            }
         }
     }
 }

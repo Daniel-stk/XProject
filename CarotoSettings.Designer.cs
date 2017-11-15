@@ -8,16 +8,16 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Caroto.Properties {
+namespace Gateway {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+    internal sealed partial class CarotoSettings : global::System.Configuration.ApplicationSettingsBase {
         
-        private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
+        private static CarotoSettings defaultInstance = ((CarotoSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new CarotoSettings())));
         
-        public static Settings Default {
+        public static CarotoSettings Default {
             get {
                 return defaultInstance;
             }
@@ -25,28 +25,19 @@ namespace Caroto.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string ApiKey {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Mock {
             get {
-                return ((string)(this["ApiKey"]));
+                return ((bool)(this["Mock"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Identidad {
+        public string AccessToken {
             get {
-                return ((string)(this["Identidad"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool IsActivated {
-            get {
-                return ((bool)(this["IsActivated"]));
+                return ((string)(this["AccessToken"]));
             }
         }
     }

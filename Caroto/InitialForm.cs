@@ -10,11 +10,21 @@ using System.Windows.Forms;
 
 namespace Caroto
 {
-    public partial class Form1 : Form
+    public partial class InitialForm : Form
     {
-        public Form1()
+        public InitialForm()
         {
             InitializeComponent();
+        }
+
+        private void Cancelar_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void Iniciar_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
