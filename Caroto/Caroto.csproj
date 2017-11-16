@@ -60,6 +60,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AuthorizationService.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,6 +90,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DTO\DTO.csproj">
+      <Project>{036da751-8ebf-4b1c-95a5-e7f7518f70d5}</Project>
+      <Name>DTO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gateway\Gateway.csproj">
+      <Project>{d7b9e0d7-8f28-47e3-9c81-26d5806f1b80}</Project>
+      <Name>Gateway</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Responses\Responses.csproj">
+      <Project>{a8ab670e-8154-48e4-918d-6e9e791c7003}</Project>
+      <Name>Responses</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

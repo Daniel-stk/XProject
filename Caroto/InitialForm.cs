@@ -22,7 +22,7 @@ namespace Caroto
             Close();
         }
 
-        private void Iniciar_Click(object sender, EventArgs e)
+        private async void Iniciar_Click(object sender, EventArgs e)
         {
             
         }
