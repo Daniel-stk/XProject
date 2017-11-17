@@ -7,6 +7,7 @@ using DTO;
 using DTO.Tools;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace Gateway
 {
@@ -16,7 +17,7 @@ namespace Gateway
 
         public HttpRequestSender()
         {
-            _httpClient.BaseAddress = new Uri(Caroto.CarotoSettings.Default.BaseAddress);
+            _httpClient.BaseAddress = new Uri(CarotoSettings.Default.BaseAddress);
         }
 
         public async Task<Response> GetAsync<T>(string endpoint)
@@ -37,8 +38,7 @@ namespace Gateway
         {
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var encodedPayload = EncodeContent(payload);
-            var uri = new Uri(_httpClient.BaseAddress + endpoint + encodedPayload.ToString());
+            var uri = BuildUriWithParameters(endpoint, payload);
             var httpResponse = await _httpClient.GetAsync(uri);
             if (httpResponse.IsSuccessStatusCode)
             {
@@ -105,11 +105,35 @@ namespace Gateway
                    if(customAttribute is UrlPropertyNameAttribute)
                     {
                         var attribute = customAttribute as UrlPropertyNameAttribute;
-                        content.Add(attribute.Property, property.GetValue(property).ToString());
+                        var value = property.GetValue(payload);
+                        content.Add(attribute.Property, value.ToString());
                     }
                 }
             }
             return new FormUrlEncodedContent(content);
+        }
+
+        private string BuildUriWithParameters(string endpoint,Dto payload)
+        {
+            var builder = new UriBuilder(CarotoSettings.Default.BaseAddress + endpoint);
+            builder.Port = -1;
+            var stringRequest = HttpUtility.ParseQueryString(builder.Query);
+
+            var type = payload.GetType();
+            foreach(var property in type.GetProperties())
+            {
+                foreach(var customAttribute in property.GetCustomAttributes(true))
+                {
+                    if(customAttribute is UrlPropertyNameAttribute)
+                    {
+                        var attribute = customAttribute as UrlPropertyNameAttribute;
+                        var value = property.GetValue(payload);
+                        stringRequest[attribute.Property] = value.ToString();
+                    }
+                }
+            }
+            builder.Query = stringRequest.ToString();
+            return builder.ToString();
         }
     }
 }

@@ -1,10 +1,8 @@
-﻿using DTO;
+﻿
+using Caroto.Exceptions;
+using DTO;
 using Gateway;
-using Gateway.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 
@@ -13,29 +11,51 @@ namespace Caroto.Services
     
     public class AuthorizationService
     {
+        private static readonly Lazy<AuthorizationService> _instance = new Lazy<AuthorizationService>(() => new AuthorizationService()); 
         private AuthorizationGateway _gateway;
 
-        public AuthorizationService()
+        public static AuthorizationService Instance { get { return _instance.Value; } }
+
+        private AuthorizationService()
         {
             _gateway = new AuthorizationGateway();
         }
 
-        public async void ExecuteAuthorization(string apiKey,string identidad)
+        public async Task<int> ExecuteAuthorization(string apiKey,string identidad)
         {
             var authDto = new AuthorizationDto() { ApiKey = apiKey, Identidad = identidad};
-            try
+            var accessTokenResponse = await _gateway.GetAccessToken(authDto);
+            if(accessTokenResponse == null)
             {
-                var accessTokenResponse = await _gateway.GetAccessToken(authDto);
+                throw new NullResponseException("No hubo respuesta exitosa de parte del servidor");
             }
-            catch (Exception exception)
+            if (!string.IsNullOrEmpty(accessTokenResponse.AccessToken))
             {
-                if(exception is ErrorResponseException)
-                {
-                }
-                if(exception is NoResponseException)
-                {
-                }
+                CarotoSettings.Default.AccessToken = accessTokenResponse.AccessToken;
+                Properties.Settings.Default.ApiKey = apiKey;
+                Properties.Settings.Default.Identidad = identidad;
+                Properties.Settings.Default.IsActivated = true;
+
+                CarotoSettings.Default.Save();
+                Properties.Settings.Default.Save();
             }
+            else
+            {
+                throw new NullResponseException("Autentificación no exitosa");
+            }
+
+            return 1;
+        }
+
+        public void Disconnect()
+        {
+            CarotoSettings.Default.AccessToken = "";
+            Properties.Settings.Default.ApiKey = "";
+            Properties.Settings.Default.Identidad = "";
+            Properties.Settings.Default.IsActivated = false;
+
+            CarotoSettings.Default.Save();
+            Properties.Settings.Default.Save();
         }
     }
 }

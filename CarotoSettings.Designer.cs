@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Caroto {
+namespace Gateway {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -23,30 +23,39 @@ namespace Caroto {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Mock {
             get {
                 return ((bool)(this["Mock"]));
             }
+            set {
+                this["Mock"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string AccessToken {
             get {
                 return ((string)(this["AccessToken"]));
             }
+            set {
+                this["AccessToken"] = value;
+            }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://carotovideo.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://carotovideo.com/")]
         public string BaseAddress {
             get {
                 return ((string)(this["BaseAddress"]));
+            }
+            set {
+                this["BaseAddress"] = value;
             }
         }
     }

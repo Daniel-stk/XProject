@@ -16,7 +16,7 @@ namespace Gateway
 
         public async Task<AccessTokenResponse> GetAccessToken(AuthorizationDto dto)
         {
-            var response = await _request.GetAsync<AccessTokenResponse>("/Caroto/API/IdentificarPantalla", dto);
+            var response = await _request.GetAsync<AccessTokenResponse>("Caroto/API/IdentificarPantalla", dto);
             if(response != null)
             {
                 var simpleResponse = response.ConvertToSimpleResponse<AccessTokenResponse>();
