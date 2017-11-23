@@ -1,14 +1,9 @@
 ﻿using Caroto.Exceptions;
+using Caroto.RecurringTasks;
 using Caroto.Services;
+using Gateway;
 using Gateway.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Caroto
@@ -16,10 +11,12 @@ namespace Caroto
     public partial class InitialForm : Form
     {
         private AuthorizationService _authService;
-        public InitialForm()
+        private ComposeRecurringTasks _composer;
+        public InitialForm(ComposeRecurringTasks composer)
         {
             InitializeComponent();
             _authService = AuthorizationService.Instance;
+            _composer = composer;
         }
 
         private void Cancelar_Click(object sender, EventArgs e)
@@ -61,11 +58,22 @@ namespace Caroto
             }
             if (Properties.Settings.Default.IsActivated)
             {
-                Hide();
-                var statusForm = new StatusForm();
-                statusForm.FormClosed += (s, args) => Close();
-                statusForm.Show();
+                ActivateStatusForm();
             }  
+        }
+
+        private void ActivateStatusForm()
+        {
+            Hide();
+            var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            System.IO.Directory.CreateDirectory(folder + @"\Communic");
+            CarotoSettings.Default.BaseFolder = folder + @"\Communic";
+            CarotoSettings.Default.Save();
+
+            _composer.ComposeTasks();
+            var statusForm = new StatusForm();
+            statusForm.FormClosed += (s, args) => Close();
+            statusForm.Show();
         }
     }
 }

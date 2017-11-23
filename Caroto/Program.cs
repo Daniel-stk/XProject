@@ -1,4 +1,5 @@
-﻿using Gateway;
+﻿using Caroto.RecurringTasks;
+using Gateway;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,29 +13,23 @@ namespace Caroto
         /// <summary>
         /// Punto de entrada principal para la aplicación.
         /// </summary>
+        /// 
+        private static ComposeRecurringTasks _recurringTaskComposer;
+
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            if (CarotoSettings.Default.Mock)
-            {
-                Properties.Settings.Default.Identidad = "";
-                Properties.Settings.Default.ApiKey = "";
-                Properties.Settings.Default.IsActivated = false;
-
-                CarotoSettings.Default.AccessToken = "";
-
-                Properties.Settings.Default.Save();
-                CarotoSettings.Default.Save();
-            }
             if (Properties.Settings.Default.IsActivated)
             {
+                _recurringTaskComposer = new ComposeRecurringTasks();
+                _recurringTaskComposer.ComposeTasks();
                 Application.Run(new StatusForm());
             }
             else
             {
-                Application.Run(new InitialForm());
+                Application.Run(new InitialForm(new ComposeRecurringTasks()));
             }
         }
     }

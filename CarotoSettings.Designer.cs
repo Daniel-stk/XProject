@@ -58,5 +58,17 @@ namespace Gateway {
                 this["BaseAddress"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string BaseFolder {
+            get {
+                return ((string)(this["BaseFolder"]));
+            }
+            set {
+                this["BaseFolder"] = value;
+            }
+        }
     }
 }

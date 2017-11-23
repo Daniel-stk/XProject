@@ -1,5 +1,7 @@
 ﻿
 using Caroto.Exceptions;
+using Caroto.RecurringTasks;
+using Caroto.RecurringTasks.Tasks;
 using DTO;
 using Gateway;
 using System;
@@ -50,9 +52,14 @@ namespace Caroto.Services
         public void Disconnect()
         {
             CarotoSettings.Default.AccessToken = "";
+            CarotoSettings.Default.BaseFolder = "";
             Properties.Settings.Default.ApiKey = "";
             Properties.Settings.Default.Identidad = "";
             Properties.Settings.Default.IsActivated = false;
+
+            MessageHub.Instance.StopRecurringTask();
+            TestSender.Instance.StopRecurringTask();
+            TriggerSequenceTask.Instance.StopRecurringTask();
 
             CarotoSettings.Default.Save();
             Properties.Settings.Default.Save();
