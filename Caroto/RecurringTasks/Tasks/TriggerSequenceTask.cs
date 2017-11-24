@@ -1,4 +1,5 @@
 ﻿using Caroto.DomainObjects;
+using Caroto.Tools;
 using Gateway;
 using Newtonsoft.Json;
 using System;
@@ -18,26 +19,22 @@ namespace Caroto.RecurringTasks.Tasks
 
         public async Task TriggerSequence(CancellationToken token)
         {
-            using (StreamReader file = File.OpenText(CarotoSettings.Default.BaseFolder+ @"\SiguientePlaylist\playlist.json"))
+            try
             {
-                try
-                {
-                    var serializer = new JsonSerializer();
-                    var playlist = (Sequence)serializer.Deserialize(file, typeof(Sequence));
-                    var playListTimeSpan = playlist.TimeToPlay.TimeOfDay;
-                    var currentTimeSpan = DateTime.Now.TimeOfDay;
-                    Console.WriteLine("Hora de reproducir - " + playListTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());
+                var playlist = JsonFileHandler.ReadJsonFile<Sequence>(@"\SiguientePlaylist\playlist.json");
+                var playListTimeSpan = playlist.TimeToPlay.TimeOfDay;
+                var currentTimeSpan = DateTime.Now.TimeOfDay;
+                Console.WriteLine("Hora de reproducir - " + playListTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());
 
-                    if(Math.Abs((playListTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
-                    {
-                        await _bufferBlock.SendAsync("Play next sequence");
-                    }
-                }
-                catch (Exception ex)
+                if(Math.Abs((playListTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
                 {
-                    Console.Write(ex.Message);
+                    await _bufferBlock.SendAsync("Play next sequence");
                 }
-             }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message + "On TriggerSequencueTask");
+            }
         }
     }
 }

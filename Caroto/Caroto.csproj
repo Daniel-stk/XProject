@@ -62,6 +62,8 @@
       <DependentUpon>CarotoSettings.settings</DependentUpon>
     </Compile>
     <Compile Include="DomainObjects\Sequence.cs" />
+    <Compile Include="EventHandlers\EventHandlersClass.cs" />
+    <Compile Include="EventHandlers\TriggerSequenceEventArgs.cs" />
     <Compile Include="Exceptions\NullResponseException.cs" />
     <Compile Include="Exceptions\RecurringTaskNullException.cs" />
     <Compile Include="InitialForm.cs">
@@ -83,6 +85,7 @@
     <Compile Include="RecurringTasks\Tasks\TriggerSequenceTask.cs" />
     <Compile Include="RecurringTasks\TestSender.cs" />
     <Compile Include="Services\AuthorizationService.cs" />
+    <Compile Include="Services\WindowsMediaPlayerService.cs" />
     <Compile Include="StatusForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,6 +94,8 @@
     </Compile>
     <Compile Include="RecurringTasks\MessageHub.cs" />
     <Compile Include="RecurringTasks\RecurringTaskFactory.cs" />
+    <Compile Include="Tools\BooleanConverter.cs" />
+    <Compile Include="Tools\JsonFileHandler.cs" />
     <Compile Include="Tools\TimeJsonConverter.cs" />
     <EmbeddedResource Include="InitialForm.resx">
       <DependentUpon>InitialForm.cs</DependentUpon>
