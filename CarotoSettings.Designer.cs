@@ -70,5 +70,41 @@ namespace Gateway {
                 this["BaseFolder"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string VideoFolder {
+            get {
+                return ((string)(this["VideoFolder"]));
+            }
+            set {
+                this["VideoFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NextSequenceFolder {
+            get {
+                return ((string)(this["NextSequenceFolder"]));
+            }
+            set {
+                this["NextSequenceFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ProgrammingFolder {
+            get {
+                return ((string)(this["ProgrammingFolder"]));
+            }
+            set {
+                this["ProgrammingFolder"] = value;
+            }
+        }
     }
 }

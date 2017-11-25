@@ -21,7 +21,7 @@ namespace Caroto.RecurringTasks.Tasks
         {
             try
             {
-                var playlist = JsonFileHandler.ReadJsonFile<Sequence>(@"\SiguientePlaylist\playlist.json");
+                var playlist = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder+@"\playlist.json");
                 var playListTimeSpan = playlist.TimeToPlay.TimeOfDay;
                 var currentTimeSpan = DateTime.Now.TimeOfDay;
                 Console.WriteLine("Hora de reproducir - " + playListTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());

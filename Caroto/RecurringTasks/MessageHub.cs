@@ -1,6 +1,7 @@
 ﻿using Caroto.DomainObjects;
 using Caroto.EventHandlers;
 using Caroto.Tools;
+using Gateway;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace Caroto.RecurringTasks
 
         public static MessageHub Instance { get { return _instance.Value; } }
         public event TriggerSequenceEventHandler TriggerSequenceEvent;
+        public event StopSequenceEventHandler StopSequenceEvent;
 
         public async Task PublishMessage(CancellationToken cancellationToken)
         {
@@ -32,6 +34,9 @@ namespace Caroto.RecurringTasks
                 case "Play next sequence":
                     OnTriggerSequence();
                     break;
+                case "Stop sequence":
+                    OnStopSequence();
+                    break;
                 default:
                     Console.WriteLine("Comando no conocido");
                     break;
@@ -43,13 +48,28 @@ namespace Caroto.RecurringTasks
             Sequence sequence;
             try
             {
-                sequence = JsonFileHandler.ReadJsonFile<Sequence>(@"\SiguientePlaylist\playlist.json");
-                TriggerSequenceEventArgs args = new TriggerSequenceEventArgs(sequence.PlayList, sequence.TotalDurationInSeconds, sequence.OnLoop);
+                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\playlist.json");
+                TriggerSequenceEventArgs args = new TriggerSequenceEventArgs(sequence.PlayList, sequence.TotalDurationInSeconds, sequence.SequenceName ,sequence.OnLoop);
                 TriggerSequenceEvent(this, args);
             }
             catch(Exception ex)
             {
-                Console.Write(ex.Message + "On MessageHub OnTriggerSequence");
+                Console.WriteLine(ex.Message + "On MessageHub OnTriggerSequence");
+            }
+        }
+
+        private void OnStopSequence()
+        {
+            Sequence sequence;
+            try
+            {
+                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\playlist.json");
+                StopSequenceEventArgs args = new StopSequenceEventArgs(sequence.SequenceName);
+                StopSequenceEvent(this, args);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message + "On MessageHub OnStopSequence");
             }
         }
     }

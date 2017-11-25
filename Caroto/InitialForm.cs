@@ -67,7 +67,15 @@ namespace Caroto
             Hide();
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             System.IO.Directory.CreateDirectory(folder + @"\Communic");
+            System.IO.Directory.CreateDirectory(folder + @"\Communic\Videos");
+            System.IO.Directory.CreateDirectory(folder + @"\Communic\SiguientePlaylist");
+            System.IO.Directory.CreateDirectory(folder + @"\Communic\Programacion");
+
             CarotoSettings.Default.BaseFolder = folder + @"\Communic";
+            CarotoSettings.Default.VideoFolder = folder + @"\Communic\Videos";
+            CarotoSettings.Default.NextSequenceFolder = folder + @"\Communic\SiguientePlaylist";
+            CarotoSettings.Default.ProgrammingFolder = folder + @"\Communic\Programacion";
+
             CarotoSettings.Default.Save();
 
             _composer.ComposeTasks();

@@ -1,23 +1,36 @@
-﻿using Caroto.EventHandlers;
+﻿using AxWMPLib;
+using Caroto.DomainObjects;
+using Caroto.EventHandlers;
 using Caroto.RecurringTasks;
 using Caroto.Services;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
+using WMPLib;
 
 namespace Caroto
 {
     public partial class MediaPlayerWindow : Form
     {
-        private delegate void ShowCallback();
+        private delegate void ShowAndPlayCallback(IWMPPlaylist playlist,bool loop,string sequenceName);
+        private delegate void StopMediaPlayerCallback();
+
         private WindowsMediaPlayerService _service;
+        private string _currentPlayList;
+        private Queue<PlayListData> playListQueueData;
+
 
         public MediaPlayerWindow()
         {
             InitializeComponent();
             _service = WindowsMediaPlayerService.Instace;
             _service.SetMediaPlayerInstance(WindowsMediaPlayer);
-            WindowsMediaPlayer.uiMode = "none";
+
             MessageHub.Instance.TriggerSequenceEvent += new TriggerSequenceEventHandler(TriggerPlayList);
+            MessageHub.Instance.StopSequenceEvent += new StopSequenceEventHandler(StopPlayList);
+
+            playListQueueData = new Queue<PlayListData>();
+            WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(PlayStateChanged);
         }
 
         public void ReproduccionManual()
@@ -27,20 +40,138 @@ namespace Caroto
 
         private void TriggerPlayList(object sender, TriggerSequenceEventArgs args)
         {
-            var playlist = _service.ComposePlaylist(args.PlayList);
-            OnWindowShow();
+            try
+            {
+                var playlist = _service.ComposePlaylist(args.PlayList);
+                OnWindowShowAndPlay(playlist, args.OnLoop, args.SequenceName);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
-        private void OnWindowShow()
+        private void StopPlayList(object sender, StopSequenceEventArgs args)
+        {
+            try
+            {
+                StopMediaPlayer();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
+        private void OnWindowShowAndPlay(IWMPPlaylist playlist,bool loop,string sequenceName)
         {
             if (InvokeRequired)
             {
-                var callback = new ShowCallback(OnWindowShow);
+                var callback = new ShowAndPlayCallback(OnWindowShowAndPlay);
+                Invoke(callback, new object[] { playlist, loop, sequenceName });
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(_currentPlayList))
+                {
+                    _currentPlayList = sequenceName;
+                }
+                else
+                {
+                    if(WindowsMediaPlayer.playState == WMPPlayState.wmppsPlaying)
+                    {
+                        if (string.Equals(_currentPlayList, "default_sequence"))
+                        {
+                            StopMediaPlayer();
+                        }
+                        else
+                        {
+                            playListQueueData.Enqueue(new PlayListData { PlayList = playlist, OnLoop = loop, SequenceName = sequenceName});
+                        }
+                    }
+                }
+
+                Show();
+
+                WindowsMediaPlayer.settings.setMode("loop", loop);
+                WindowsMediaPlayer.uiMode = "none";
+                WindowsMediaPlayer.currentPlaylist = playlist;
+                WindowsMediaPlayer.Ctlcontrols.play();
+            }
+        }
+
+        private void StopMediaPlayer()
+        {
+            if (InvokeRequired)
+            {
+                var callback = new StopMediaPlayerCallback(StopMediaPlayer);
                 Invoke(callback);
             }
             else
             {
-                Show();
+                WindowsMediaPlayer.Ctlcontrols.stop();
+            }
+        }
+
+        private void PlayStateChanged(object sender, _WMPOCXEvents_PlayStateChangeEvent e)
+        {
+            switch (e.newState)
+            {
+                case 0:
+                    Console.WriteLine("Undefinded");
+                    break;
+                case 1:
+                    Console.WriteLine("Stopped");
+                    break;
+                case 2:
+                    Console.WriteLine("Paused");
+                    break;
+                case 3:
+                    Console.WriteLine("Playing");
+                    WindowsMediaPlayer.fullScreen = true;
+                    break;
+                case 4:
+                    Console.WriteLine("ScanForward");
+                    break;
+                case 5:
+                    Console.WriteLine("ScanReverse");
+                    break;
+                case 6:
+                    Console.WriteLine("Buffering");
+                    break;
+                case 7:
+                    Console.WriteLine("Waiting");
+                    break;
+                case 8:
+                    Console.WriteLine("MediaEnded");
+                    if(playListQueueData.Count > 0)
+                    {
+                        var playListData = playListQueueData.Dequeue();
+                        WindowsMediaPlayer.settings.setMode("loop",playListData.OnLoop);
+                        WindowsMediaPlayer.uiMode = "none";
+                        WindowsMediaPlayer.currentPlaylist = playListData.PlayList;
+                        WindowsMediaPlayer.Ctlcontrols.play();
+                    }
+                    else
+                    {
+                        Close();
+                    }
+                    break;
+                case 9:
+                    Console.WriteLine("Transitioning");
+                    break;
+                case 10:
+                    Console.WriteLine("Ready");
+                    break;
+                case 11:
+                    Console.WriteLine("Reconnecting");
+                    break;
+                case 12:
+                    Console.WriteLine("Last");
+                    break;
+                default:
+                    Console.WriteLine("Estado de reproductor desconocido");
+                    break;
             }
         }
     }

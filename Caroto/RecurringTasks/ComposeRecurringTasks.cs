@@ -18,7 +18,7 @@ namespace Caroto.RecurringTasks
         public ComposeRecurringTasks()
         {
             hub = MessageHub.Instance;
-            sender = TestSender.Instance;
+            //sender = TestSender.Instance;
             triggerSequence = TriggerSequenceTask.Instance;
         }
 
@@ -32,21 +32,21 @@ namespace Caroto.RecurringTasks
         private void WireMessageService()
         {
             hub.BufferBlockMessager = MessageService;
-            sender.BufferBlockMessager = MessageService;
+            //sender.BufferBlockMessager = MessageService;
             triggerSequence.BufferBlockMessager = MessageService;
         }
 
         private void CreateRecurringTasks()
         {
             hub.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => hub.PublishMessage(ct), hub.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
-            sender.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => sender.WriteMessage(ct), sender.CancellationTokenSource.Token,TimeSpan.FromMinutes(5));
+            //sender.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => sender.WriteMessage(ct), sender.CancellationTokenSource.Token,TimeSpan.FromMinutes(5));
             triggerSequence.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => triggerSequence.TriggerSequence(ct), triggerSequence.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
         }
 
         private void StartTasks()
         {
             hub.StartRecurringTask();
-            sender.StartRecurringTask();
+            //sender.StartRecurringTask();
             triggerSequence.StartRecurringTask();
         }
     }

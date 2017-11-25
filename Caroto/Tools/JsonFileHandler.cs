@@ -8,7 +8,7 @@ namespace Caroto.Tools
     {
         public static T ReadJsonFile<T>(string path) where T : class 
         {
-            using (StreamReader file = File.OpenText(CarotoSettings.Default.BaseFolder + path))
+            using (StreamReader file = File.OpenText(path))
             {
                     var serializer = new JsonSerializer();
                     var output = serializer.Deserialize(file, typeof(T)) as T;
