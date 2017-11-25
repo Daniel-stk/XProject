@@ -82,6 +82,7 @@ namespace Caroto
                     {
                         if (string.Equals(_currentPlayList, "default_sequence"))
                         {
+                            _currentPlayList = sequenceName;                           
                             StopMediaPlayer();
                         }
                         else
@@ -122,6 +123,10 @@ namespace Caroto
                     break;
                 case 1:
                     Console.WriteLine("Stopped");
+                    if (!ActionsBeforeClose())
+                    {
+                        Close();//Posible change to play default sequence
+                    }
                     break;
                 case 2:
                     Console.WriteLine("Paused");
@@ -144,17 +149,9 @@ namespace Caroto
                     break;
                 case 8:
                     Console.WriteLine("MediaEnded");
-                    if(playListQueueData.Count > 0)
+                    if (!ActionsBeforeClose())
                     {
-                        var playListData = playListQueueData.Dequeue();
-                        WindowsMediaPlayer.settings.setMode("loop",playListData.OnLoop);
-                        WindowsMediaPlayer.uiMode = "none";
-                        WindowsMediaPlayer.currentPlaylist = playListData.PlayList;
-                        WindowsMediaPlayer.Ctlcontrols.play();
-                    }
-                    else
-                    {
-                        Close();
+                        Close();//Posible change to play default sequence
                     }
                     break;
                 case 9:
@@ -174,6 +171,20 @@ namespace Caroto
                     break;
             }
         }
-    }
 
+        private bool ActionsBeforeClose()
+        {
+            if (playListQueueData.Count > 0)
+            {
+                var playListData = playListQueueData.Dequeue();
+                _currentPlayList = playListData.SequenceName;
+                WindowsMediaPlayer.settings.setMode("loop", playListData.OnLoop);
+                WindowsMediaPlayer.uiMode = "none";
+                WindowsMediaPlayer.currentPlaylist = playListData.PlayList;
+                WindowsMediaPlayer.Ctlcontrols.play();
+                return true;
+            }
+            return false;
+        }
+    }
 }

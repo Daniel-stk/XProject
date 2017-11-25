@@ -3,6 +3,7 @@ using Caroto.Tools;
 using Gateway;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -25,13 +26,19 @@ namespace Caroto.RecurringTasks.Tasks
         {
             try
             {
-                var sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\playlist.json");
-                var sequenceEndTimeSpan = sequence.EndTime.TimeOfDay;
-                var currentTimeSpan = DateTime.Now.TimeOfDay;
+                if (File.Exists(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json")) { 
+                    var sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json");
+                    var sequenceEndTimeSpan = sequence.EndTime.TimeOfDay;
+                    var currentTimeSpan = DateTime.Now.TimeOfDay;
 
-                if(Math.Abs((sequenceEndTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
+                    if(Math.Abs((sequenceEndTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
+                    {
+                        await _bufferBlock.SendAsync("Stop sequence");
+                    }
+                }
+                else
                 {
-                    await _bufferBlock.SendAsync("Stop sequence");
+                    Console.WriteLine("No existe playlist actual");
                 }
             }
             catch (Exception ex)

@@ -21,14 +21,20 @@ namespace Caroto.RecurringTasks.Tasks
         {
             try
             {
-                var playlist = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder+@"\playlist.json");
-                var playListTimeSpan = playlist.TimeToPlay.TimeOfDay;
-                var currentTimeSpan = DateTime.Now.TimeOfDay;
-                Console.WriteLine("Hora de reproducir - " + playListTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());
+                if (File.Exists(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json")) { 
+                    var playlist = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder+@"\nextPlaylist.json");
+                    var playListTimeSpan = playlist.TimeToPlay.TimeOfDay;
+                    var currentTimeSpan = DateTime.Now.TimeOfDay;
+                    Console.WriteLine("Hora de reproducir - " + playListTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());
 
-                if(Math.Abs((playListTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
+                    if(Math.Abs((playListTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
+                    {
+                        await _bufferBlock.SendAsync("Play next sequence");
+                    }
+                }
+                else
                 {
-                    await _bufferBlock.SendAsync("Play next sequence");
+                    Console.WriteLine("Siguiente playlist no definido");
                 }
             }
             catch (Exception ex)

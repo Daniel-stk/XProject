@@ -48,7 +48,8 @@ namespace Caroto.RecurringTasks
             Sequence sequence;
             try
             {
-                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\playlist.json");
+                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
+                JsonFileHandler.WriteJsonFile(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json", sequence);
                 TriggerSequenceEventArgs args = new TriggerSequenceEventArgs(sequence.PlayList, sequence.TotalDurationInSeconds, sequence.SequenceName ,sequence.OnLoop);
                 TriggerSequenceEvent(this, args);
             }
@@ -63,7 +64,7 @@ namespace Caroto.RecurringTasks
             Sequence sequence;
             try
             {
-                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\playlist.json");
+                sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json");
                 StopSequenceEventArgs args = new StopSequenceEventArgs(sequence.SequenceName);
                 StopSequenceEvent(this, args);
             }

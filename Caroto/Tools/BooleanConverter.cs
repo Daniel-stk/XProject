@@ -9,8 +9,6 @@ namespace Caroto.Tools
 {
     class BooleanConverter : JsonConverter
     {
-        public override bool CanWrite { get { return false; } }
-
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(bool);
@@ -37,7 +35,7 @@ namespace Caroto.Tools
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-
+            writer.WriteValue((bool)value ? 1 : 0);
         }
     }
 }
