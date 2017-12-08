@@ -16,7 +16,7 @@ namespace Caroto.Tools
             try
             {
                 var time = reader.Value.ToString();
-                DateTime parsedTime = DateTime.ParseExact(time, @"H:mm", CultureInfo.InvariantCulture);
+                DateTime parsedTime = DateTime.ParseExact(time, @"HH:mm", CultureInfo.InvariantCulture);
                 return parsedTime;
             }
             catch(Exception ex)
@@ -40,12 +40,12 @@ namespace Caroto.Tools
                     dateTime = DateTime.Now;
                 }
 
-                var time = dateTime.TimeOfDay;
-                writer.WriteValue(time.ToString(@"h:mm"));
+                Console.WriteLine(dateTime.ToString(@"HH:mm"));
+                writer.WriteValue(dateTime.ToString(@"HH:mm"));
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex.Message + "On JSON write");
             }
         }
     }

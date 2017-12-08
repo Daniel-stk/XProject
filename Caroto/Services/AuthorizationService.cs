@@ -60,6 +60,7 @@ namespace Caroto.Services
             MessageHub.Instance.StopRecurringTask();
             TestSender.Instance.StopRecurringTask();
             TriggerSequenceTask.Instance.StopRecurringTask();
+            StopSequenceTask.Instance.StopRecurringTask();
 
             CarotoSettings.Default.Save();
             Properties.Settings.Default.Save();

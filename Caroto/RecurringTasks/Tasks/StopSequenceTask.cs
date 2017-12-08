@@ -30,8 +30,9 @@ namespace Caroto.RecurringTasks.Tasks
                     var sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json");
                     var sequenceEndTimeSpan = sequence.EndTime.TimeOfDay;
                     var currentTimeSpan = DateTime.Now.TimeOfDay;
+                    Console.WriteLine("Hora de detener - " + sequenceEndTimeSpan.ToString() + " - Hora actual - " + currentTimeSpan.ToString());
 
-                    if(Math.Abs((sequenceEndTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
+                    if (Math.Abs((sequenceEndTimeSpan - currentTimeSpan).TotalMilliseconds) < 500)
                     {
                         await _bufferBlock.SendAsync("Stop sequence");
                     }

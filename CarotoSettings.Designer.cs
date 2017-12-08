@@ -49,7 +49,7 @@ namespace Gateway {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://carotovideo.com/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://communic.tv/")]
         public string BaseAddress {
             get {
                 return ((string)(this["BaseAddress"]));

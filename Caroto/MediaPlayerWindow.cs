@@ -149,10 +149,10 @@ namespace Caroto
                     break;
                 case 8:
                     Console.WriteLine("MediaEnded");
-                    if (!ActionsBeforeClose())
-                    {
-                        Close();//Posible change to play default sequence
-                    }
+                    //if (!ActionsBeforeClose())
+                    //{
+                    //    Close();//Posible change to play default sequence
+                    //}
                     break;
                 case 9:
                     Console.WriteLine("Transitioning");

@@ -50,6 +50,7 @@
     <Compile Include="Response.cs" />
     <Compile Include="SimpleResponse.cs" />
     <Compile Include="Tools\ResponseExtensions.cs" />
+    <Compile Include="VideoDataResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

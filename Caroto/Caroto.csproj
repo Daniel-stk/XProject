@@ -86,8 +86,10 @@
     <Compile Include="RecurringTasks\RecurringTask.cs" />
     <Compile Include="RecurringTasks\Tasks\StopSequenceTask.cs" />
     <Compile Include="RecurringTasks\Tasks\TriggerSequenceTask.cs" />
+    <Compile Include="RecurringTasks\Tasks\VideoDownloadListComposerTask.cs" />
     <Compile Include="RecurringTasks\TestSender.cs" />
     <Compile Include="Services\AuthorizationService.cs" />
+    <Compile Include="Services\VideoManagerService.cs" />
     <Compile Include="Services\WindowsMediaPlayerService.cs" />
     <Compile Include="StatusForm.cs">
       <SubType>Form</SubType>

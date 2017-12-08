@@ -12,14 +12,16 @@ namespace Caroto.RecurringTasks
     {
         private static BufferBlock<string> MessageService = new BufferBlock<string>();
         private MessageHub hub;
-        private TestSender sender;
+        //private TestSender sender;
         private TriggerSequenceTask triggerSequence;
+        private StopSequenceTask stopSequence;
 
         public ComposeRecurringTasks()
         {
             hub = MessageHub.Instance;
             //sender = TestSender.Instance;
             triggerSequence = TriggerSequenceTask.Instance;
+            stopSequence = StopSequenceTask.Instance;
         }
 
         public void ComposeTasks()
@@ -34,6 +36,7 @@ namespace Caroto.RecurringTasks
             hub.BufferBlockMessager = MessageService;
             //sender.BufferBlockMessager = MessageService;
             triggerSequence.BufferBlockMessager = MessageService;
+            stopSequence.BufferBlockMessager = MessageService;
         }
 
         private void CreateRecurringTasks()
@@ -41,6 +44,7 @@ namespace Caroto.RecurringTasks
             hub.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => hub.PublishMessage(ct), hub.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
             //sender.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => sender.WriteMessage(ct), sender.CancellationTokenSource.Token,TimeSpan.FromMinutes(5));
             triggerSequence.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => triggerSequence.TriggerSequence(ct), triggerSequence.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
+            stopSequence.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => stopSequence.StopSequence(ct), stopSequence.CancellationTokenSource.Token, TimeSpan.FromSeconds(1));
         }
 
         private void StartTasks()
@@ -48,6 +52,7 @@ namespace Caroto.RecurringTasks
             hub.StartRecurringTask();
             //sender.StartRecurringTask();
             triggerSequence.StartRecurringTask();
+            stopSequence.StartRecurringTask();
         }
     }
 }
