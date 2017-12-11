@@ -1,5 +1,6 @@
 ﻿using Gateway;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Caroto.Tools
@@ -32,6 +33,23 @@ namespace Caroto.Tools
                 {
                     var serializer = new JsonSerializer();
                     serializer.Serialize(file, data);
+                    return true;
+                }
+            }
+        }
+
+        public static bool WriteJsonFile<T>(string path,List<T> data) where T : class
+        {
+            lock (SyncRoot)
+            {
+                if (File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+                using (StreamWriter file = File.CreateText(path))
+                {
+                    var serializer = new JsonSerializer();
+                    serializer.Serialize(file, data.ToArray());
                     return true;
                 }
             }

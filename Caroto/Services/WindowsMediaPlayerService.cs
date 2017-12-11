@@ -38,7 +38,7 @@ namespace Caroto.Services
             IWMPMedia media;
             foreach(var video in videos)
             {
-                media = _windowsMediaPlayer.newMedia(CarotoSettings.Default.VideoFolder+@"\"+video);
+                media = _windowsMediaPlayer.newMedia(CarotoSettings.Default.VideoFolder+@"\videos\"+video);
                 playlist.appendItem(media);
             }
             return playlist;

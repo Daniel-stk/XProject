@@ -12,10 +12,10 @@ namespace Responses
         [JsonProperty("video_id")]
         public int VideoId { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("nombre")]
         public string Name { get; set; }
         
-        [JsonProperty("file")]
+        [JsonProperty("archivo")]
         public string File { get; set; }
 
         [JsonProperty("thumbnail")]

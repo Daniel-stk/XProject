@@ -1,10 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Caroto.Tools
 {
-    class TimeJsonConverter : JsonConverter
+    public class DateConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
@@ -16,10 +20,10 @@ namespace Caroto.Tools
             try
             {
                 var time = reader.Value.ToString();
-                DateTime parsedTime = DateTime.ParseExact(time, @"HH:mm:ss", CultureInfo.InvariantCulture);
+                DateTime parsedTime = DateTime.ParseExact(time, @"YYYY-MM-DD", CultureInfo.InvariantCulture);
                 return parsedTime;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return DateTime.Now;
@@ -29,9 +33,9 @@ namespace Caroto.Tools
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             try
-            { 
+            {
                 DateTime dateTime;
-                if(value is DateTime)
+                if (value is DateTime)
                 {
                     dateTime = (DateTime)value;
                 }
@@ -40,9 +44,10 @@ namespace Caroto.Tools
                     dateTime = DateTime.Now;
                 }
 
-                 writer.WriteValue(dateTime.ToString(@"HH:mm:ss"));
+                Console.WriteLine(dateTime.ToString(@"YYYY-MM-DD"));
+                writer.WriteValue(dateTime.ToString(@"YYYY-MM-DD"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message + "On JSON write");
             }

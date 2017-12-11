@@ -46,10 +46,15 @@
   <ItemGroup>
     <Compile Include="AccessTokenResponse.cs" />
     <Compile Include="ComplexResponse.cs" />
+    <Compile Include="ProgrammingResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Response.cs" />
+    <Compile Include="SequenceResponse.cs" />
     <Compile Include="SimpleResponse.cs" />
+    <Compile Include="Tools\BooleanConverter.cs" />
+    <Compile Include="Tools\DateConverter.cs" />
     <Compile Include="Tools\ResponseExtensions.cs" />
+    <Compile Include="Tools\TimeJsonConverter.cs" />
     <Compile Include="VideoDataResponse.cs" />
   </ItemGroup>
   <ItemGroup>

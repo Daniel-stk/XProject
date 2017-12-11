@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="BaseAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://communic.tv/</Value>
+      <Value Profile="(Default)">https://communic.tv/</Value>
     </Setting>
     <Setting Name="BaseFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

@@ -49,6 +49,20 @@ namespace Caroto.Services
             return 1;
         }
 
+        public async Task<string> ServerFolder(string apiKey,string identidad)
+        {
+            var authDto = new AuthorizationDto() { ApiKey = apiKey, Identidad = identidad };
+            var folder = await _gateway.GetServerFolder(authDto);
+            if (!string.IsNullOrEmpty(folder))
+            {
+                return folder;
+            }
+            else
+            {
+                throw new NullResponseException("Folder no encontrado");
+            }
+        }
+
         public void Disconnect()
         {
             CarotoSettings.Default.AccessToken = "";
@@ -61,6 +75,7 @@ namespace Caroto.Services
             TestSender.Instance.StopRecurringTask();
             TriggerSequenceTask.Instance.StopRecurringTask();
             StopSequenceTask.Instance.StopRecurringTask();
+            VideoDownloadListComposerTask.Instance.StopRecurringTask();
 
             CarotoSettings.Default.Save();
             Properties.Settings.Default.Save();

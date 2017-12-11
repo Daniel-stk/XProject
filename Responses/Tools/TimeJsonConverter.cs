@@ -40,7 +40,8 @@ namespace Caroto.Tools
                     dateTime = DateTime.Now;
                 }
 
-                 writer.WriteValue(dateTime.ToString(@"HH:mm:ss"));
+                Console.WriteLine(dateTime.ToString(@"HH:mm:ss"));
+                writer.WriteValue(dateTime.ToString(@"HH:mm:ss"));
             }
             catch(Exception ex)
             {

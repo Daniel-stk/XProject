@@ -2,6 +2,7 @@
 {
     public static class ResponseExtensions
     {
+        public enum ResponseType { simple, complex };
         public static ComplexResponse<T> ConvertToComplexResponse<T>(this Response response)
         {
             return response as ComplexResponse<T>;
