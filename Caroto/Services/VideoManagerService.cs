@@ -44,6 +44,15 @@ namespace Caroto.Services
             }
         }
 
+        public int GetCountVideosOnFolder()
+        {
+            if(Directory.Exists(CarotoSettings.Default.VideoFolder + @"\videos\"))
+            {
+                return Directory.GetFiles(CarotoSettings.Default.VideoFolder + @"\videos\", "*.mp4").Length;
+            }
+            return 0;
+        }
+
         public async Task<bool> DownloadVideoFiles(string url,List<VideoDataResponse> videos)
         {
             foreach(var video in videos)

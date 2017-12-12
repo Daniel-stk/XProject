@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatusForm));
             this.Desconectar = new System.Windows.Forms.Button();
             this.actualizacionLbl = new System.Windows.Forms.Label();
             this.ultimaActualizacion = new System.Windows.Forms.TextBox();
@@ -40,6 +42,7 @@
             this.Play = new System.Windows.Forms.Button();
             this.totalRerpoduccionLbl = new System.Windows.Forms.Label();
             this.tiempoTotal = new System.Windows.Forms.TextBox();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // Desconectar
@@ -105,6 +108,7 @@
             this.Ver.TabIndex = 6;
             this.Ver.Text = "...";
             this.Ver.UseVisualStyleBackColor = true;
+            this.Ver.Click += new System.EventHandler(this.Ver_Click);
             // 
             // label1
             // 
@@ -152,6 +156,16 @@
             this.tiempoTotal.Size = new System.Drawing.Size(137, 20);
             this.tiempoTotal.TabIndex = 11;
             // 
+            // notifyIcon
+            // 
+            this.notifyIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.notifyIcon.BalloonTipText = "Communic tv está activo";
+            this.notifyIcon.BalloonTipTitle = "Communic tv";
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon.Icon")));
+            this.notifyIcon.Text = "CommunicTv";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
             // StatusForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -169,6 +183,7 @@
             this.Controls.Add(this.ultimaActualizacion);
             this.Controls.Add(this.actualizacionLbl);
             this.Controls.Add(this.Desconectar);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximumSize = new System.Drawing.Size(475, 500);
             this.MinimumSize = new System.Drawing.Size(475, 500);
             this.Name = "StatusForm";
@@ -192,5 +207,6 @@
         private System.Windows.Forms.Button Play;
         private System.Windows.Forms.Label totalRerpoduccionLbl;
         private System.Windows.Forms.TextBox tiempoTotal;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }

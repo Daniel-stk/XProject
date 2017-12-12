@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Caroto.RecurringTasks.Tasks
 {
@@ -39,6 +40,7 @@ namespace Caroto.RecurringTasks.Tasks
                         var success = await _videoService.DownloadVideoFiles(CarotoSettings.Default.BaseAddress + @"/data/" + folder + @"/videos/",videosToDownloadList.Videos);
                         videosToDownloadList.Processed = success;
                         JsonFileHandler.WriteJsonFile(CarotoSettings.Default.VideoFolder + @"\VideosToDownload.json", videosToDownloadList);
+                        await _bufferBlock.SendAsync("Download Operation Done");
                         Console.WriteLine("Fin descarga de videos");
                     }
                 }
@@ -46,6 +48,10 @@ namespace Caroto.RecurringTasks.Tasks
                 {
                     Console.WriteLine(ex.Message);
                 }
+            }
+            else
+            {
+                Console.WriteLine("Lista de videos a descargar aun no esta generada");
             }
         }
     }

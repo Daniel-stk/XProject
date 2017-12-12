@@ -20,7 +20,7 @@ namespace Caroto.Tools
             try
             {
                 var time = reader.Value.ToString();
-                DateTime parsedTime = DateTime.ParseExact(time, @"YYYY-MM-DD", CultureInfo.InvariantCulture);
+                DateTime parsedTime = DateTime.ParseExact(time, @"yyyy-MM-dd", CultureInfo.InvariantCulture);
                 return parsedTime;
             }
             catch (Exception ex)
@@ -44,8 +44,8 @@ namespace Caroto.Tools
                     dateTime = DateTime.Now;
                 }
 
-                Console.WriteLine(dateTime.ToString(@"YYYY-MM-DD"));
-                writer.WriteValue(dateTime.ToString(@"YYYY-MM-DD"));
+                Console.WriteLine(dateTime.ToString(@"yyyy-MM-dd"));
+                writer.WriteValue(dateTime.ToString(@"yyyy-MM-dd"));
             }
             catch (Exception ex)
             {

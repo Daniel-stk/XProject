@@ -20,5 +20,7 @@ namespace Responses
 
         [JsonProperty("thumbnail")]
         public string Thumbnail { get; set; }
+
+        public int Duration { get; set; }
     }
 }

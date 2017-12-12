@@ -4,6 +4,7 @@ using Gateway;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Caroto.RecurringTasks.Tasks
 {
@@ -22,13 +23,11 @@ namespace Caroto.RecurringTasks.Tasks
         {
             try
             {
-                if(DateTime.Now.TimeOfDay.Ticks == 0)
-                { 
-                    Console.WriteLine("Descargando programación"); 
-                    var programming = await _service.CreateProgrammingInformation(Properties.Settings.Default.ApiKey, Properties.Settings.Default.Identidad);
-                    JsonFileHandler.WriteJsonFile(CarotoSettings.Default.ProgrammingFolder + @"\Programming.json",programming);
-                    Console.WriteLine("Descarga de programación finalizada");
-                }
+                Console.WriteLine("Descargando programación"); 
+                var programming = await _service.CreateProgrammingInformation(Properties.Settings.Default.ApiKey, Properties.Settings.Default.Identidad);
+                JsonFileHandler.WriteJsonFile(CarotoSettings.Default.ProgrammingFolder + @"\Programming.json",programming);
+                await _bufferBlock.SendAsync("Programming Downloaded");
+                Console.WriteLine("Descarga de programación finalizada");
             }
             catch(Exception ex)
             {

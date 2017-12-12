@@ -75,6 +75,7 @@ namespace Caroto
                 if (string.IsNullOrEmpty(_currentPlayList))
                 {
                     _currentPlayList = sequenceName;
+                    Play(playlist,loop);
                 }
                 else
                 {
@@ -84,6 +85,7 @@ namespace Caroto
                         {
                             _currentPlayList = sequenceName;                           
                             StopMediaPlayer();
+                            Play(playlist,loop);
                         }
                         else
                         {
@@ -91,13 +93,6 @@ namespace Caroto
                         }
                     }
                 }
-
-                Show();
-
-                WindowsMediaPlayer.settings.setMode("loop", loop);
-                WindowsMediaPlayer.uiMode = "none";
-                WindowsMediaPlayer.currentPlaylist = playlist;
-                WindowsMediaPlayer.Ctlcontrols.play();
             }
         }
 
@@ -178,13 +173,22 @@ namespace Caroto
             {
                 var playListData = playListQueueData.Dequeue();
                 _currentPlayList = playListData.SequenceName;
-                WindowsMediaPlayer.settings.setMode("loop", playListData.OnLoop);
-                WindowsMediaPlayer.uiMode = "none";
-                WindowsMediaPlayer.currentPlaylist = playListData.PlayList;
-                WindowsMediaPlayer.Ctlcontrols.play();
+                Play(playListData.PlayList, playListData.OnLoop);
                 return true;
             }
             return false;
+        }
+
+        private void Play(IWMPPlaylist playlist,bool loop)
+        {
+            if (!Visible)
+            { 
+                Show();
+            }
+            WindowsMediaPlayer.settings.setMode("loop", loop);
+            WindowsMediaPlayer.uiMode = "none";
+            WindowsMediaPlayer.currentPlaylist = playlist;
+            WindowsMediaPlayer.Ctlcontrols.play();
         }
     }
 }
