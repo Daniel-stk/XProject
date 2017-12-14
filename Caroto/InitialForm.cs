@@ -1,6 +1,7 @@
 ﻿using Caroto.Exceptions;
 using Caroto.RecurringTasks;
 using Caroto.Services;
+using Caroto.Tools;
 using Gateway;
 using Gateway.Exceptions;
 using System;
@@ -39,7 +40,10 @@ namespace Caroto
             } 
             catch(Exception ex)
             {
-                if(ex is ErrorResponseException)
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + "On Iniciar_Click Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
+                if (ex is ErrorResponseException)
                 {
                     MessageBox.Show("Se encontrar dificultades en la autentificación - " + ex.Message);
                 }
@@ -66,6 +70,7 @@ namespace Caroto
         {
             Hide();
             var folder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        
             System.IO.Directory.CreateDirectory(folder + @"\Communic");
             System.IO.Directory.CreateDirectory(folder + @"\Communic\Videos");
             System.IO.Directory.CreateDirectory(folder + @"\Communic\SiguientePlaylist");
@@ -75,7 +80,11 @@ namespace Caroto
             CarotoSettings.Default.VideoFolder = folder + @"\Communic\Videos";
             CarotoSettings.Default.NextSequenceFolder = folder + @"\Communic\SiguientePlaylist";
             CarotoSettings.Default.ProgrammingFolder = folder + @"\Communic\Programacion";
-
+#if DEBUG
+            var logFolder = @"C:\CommunicLog\";
+            System.IO.Directory.CreateDirectory(logFolder);
+            CarotoSettings.Default.LogFolder = logFolder;
+#endif
             CarotoSettings.Default.Save();
 
             _composer.ComposeTasks();

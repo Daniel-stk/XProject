@@ -3,8 +3,11 @@ using Caroto.DomainObjects;
 using Caroto.EventHandlers;
 using Caroto.RecurringTasks;
 using Caroto.Services;
+using Caroto.Tools;
+using Gateway;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Windows.Forms;
 using WMPLib;
 
@@ -12,7 +15,7 @@ namespace Caroto
 {
     public partial class MediaPlayerWindow : Form
     {
-        private delegate void ShowAndPlayCallback(IWMPPlaylist playlist,bool loop,string sequenceName);
+        private delegate void ShowAndPlayCallback(IWMPPlaylist playlist,bool loop,string sequenceName,string totalSequenceDuration);
         private delegate void StopMediaPlayerCallback();
 
         private WindowsMediaPlayerService _service;
@@ -26,6 +29,8 @@ namespace Caroto
             _service = WindowsMediaPlayerService.Instace;
             _service.SetMediaPlayerInstance(WindowsMediaPlayer);
 
+            notifyWMP.Visible = false;
+
             MessageHub.Instance.TriggerSequenceEvent += new TriggerSequenceEventHandler(TriggerPlayList);
             MessageHub.Instance.StopSequenceEvent += new StopSequenceEventHandler(StopPlayList);
 
@@ -33,9 +38,40 @@ namespace Caroto
             WindowsMediaPlayer.PlayStateChange += new AxWMPLib._WMPOCXEvents_PlayStateChangeEventHandler(PlayStateChanged);
         }
 
-        public void ReproduccionManual()
+        public bool ReproduccionManual()
         {
-            Show();
+            try { 
+                var sequence = _service.GetNextSequence();
+                if(sequence != null)
+                {
+                    var playList = _service.ComposePlaylist(sequence.PlayList);
+                    if (WindowsMediaPlayer.playState == WMPPlayState.wmppsPlaying)
+                    {
+                        playListQueueData.Enqueue(new PlayListData { PlayList = playList, OnLoop = sequence.OnLoop, SequenceName = sequence.SequenceName, TotalSequenceDuration = sequence.TotalSequenceDuration});
+                        ShowNotification("CommunicTv Player Reproductor activo", "Se agrego lista de reproducción " + sequence.SequenceName + " a la fila de reporducción");
+                        return true;
+                    }
+                    else
+                    {
+                        Play(playList, sequence.OnLoop);
+                        return true;
+                    }
+                }
+                else
+                {
+                    ShowNotification("CommunicTv Player", "No hay más programaciónes para el día de hoy");
+                    Close();
+                    return false;
+                }
+            }
+            catch(Exception ex)
+            {
+                ShowNotification("CommunicTv Player Error",ex.Message);
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
+                return false;
+            }
         }
 
         private void TriggerPlayList(object sender, TriggerSequenceEventArgs args)
@@ -43,11 +79,13 @@ namespace Caroto
             try
             {
                 var playlist = _service.ComposePlaylist(args.PlayList);
-                OnWindowShowAndPlay(playlist, args.OnLoop, args.SequenceName);
+                OnWindowShowAndPlay(playlist, args.OnLoop, args.SequenceName,args.TotalSequenceDuration);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
             }
         }
 
@@ -59,16 +97,18 @@ namespace Caroto
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
             }
         }
 
-        private void OnWindowShowAndPlay(IWMPPlaylist playlist,bool loop,string sequenceName)
+        private void OnWindowShowAndPlay(IWMPPlaylist playlist,bool loop,string sequenceName,string totalSequenceDuration)
         {
             if (InvokeRequired)
             {
                 var callback = new ShowAndPlayCallback(OnWindowShowAndPlay);
-                Invoke(callback, new object[] { playlist, loop, sequenceName });
+                Invoke(callback, new object[] { playlist, loop, sequenceName, totalSequenceDuration });
             }
             else
             {
@@ -89,7 +129,8 @@ namespace Caroto
                         }
                         else
                         {
-                            playListQueueData.Enqueue(new PlayListData { PlayList = playlist, OnLoop = loop, SequenceName = sequenceName});
+                            playListQueueData.Enqueue(new PlayListData { PlayList = playlist, OnLoop = loop, SequenceName = sequenceName, TotalSequenceDuration = totalSequenceDuration});
+                            ShowNotification("CommunicTv Player", "Se agrego lista de reproducción " + sequenceName + " a la fila de reporducción");
                         }
                     }
                 }
@@ -106,6 +147,10 @@ namespace Caroto
             else
             {
                 WindowsMediaPlayer.Ctlcontrols.stop();
+                if (!ActionsBeforeClose())
+                {
+                    Close();//Posible change to play default sequence
+                }
             }
         }
 
@@ -144,16 +189,17 @@ namespace Caroto
                     break;
                 case 8:
                     Console.WriteLine("MediaEnded");
-                    //if (!ActionsBeforeClose())
-                    //{
-                    //    Close();//Posible change to play default sequence
-                    //}
+                  
                     break;
                 case 9:
                     Console.WriteLine("Transitioning");
                     break;
                 case 10:
                     Console.WriteLine("Ready");
+                    if (!WindowsMediaPlayer.settings.getMode("loop"))
+                    {
+                        MessageHub.Instance.PublishMessage("Stop sequence");
+                    }
                     break;
                 case 11:
                     Console.WriteLine("Reconnecting");
@@ -173,6 +219,7 @@ namespace Caroto
             {
                 var playListData = playListQueueData.Dequeue();
                 _currentPlayList = playListData.SequenceName;
+                CarotoSettings.Default.TotalTime += TimeSpan.ParseExact(playListData.TotalSequenceDuration, @"hh\:mm\:ss", CultureInfo.InvariantCulture);               
                 Play(playListData.PlayList, playListData.OnLoop);
                 return true;
             }
@@ -189,6 +236,23 @@ namespace Caroto
             WindowsMediaPlayer.uiMode = "none";
             WindowsMediaPlayer.currentPlaylist = playlist;
             WindowsMediaPlayer.Ctlcontrols.play();
+        }
+
+        private void ShowNotification(string title, string body)
+        {
+            notifyWMP.Visible = true;
+
+            if (title != null)
+            {
+                notifyWMP.BalloonTipTitle = title;
+            }
+
+            if (body != null)
+            {
+                notifyWMP.BalloonTipText = body;
+            }
+
+            notifyWMP.ShowBalloonTip(5000);
         }
     }
 }

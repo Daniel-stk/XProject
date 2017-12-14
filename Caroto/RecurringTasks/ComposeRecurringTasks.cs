@@ -51,12 +51,12 @@ namespace Caroto.RecurringTasks
         private void CreateRecurringTasks()
         {
             hub.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => hub.PublishMessage(ct), hub.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
-            videoDownloadListComposer.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => videoDownloadListComposer.ComposeVideoDownloadList(ct), videoDownloadListComposer.CancellationTokenSource.Token, TimeSpan.FromMinutes(10));
+            videoDownloadListComposer.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => videoDownloadListComposer.ComposeVideoDownloadList(ct), videoDownloadListComposer.CancellationTokenSource.Token, TimeSpan.FromMinutes(5));
             triggerSequence.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => triggerSequence.TriggerSequence(ct), triggerSequence.CancellationTokenSource.Token,TimeSpan.FromSeconds(1));
             stopSequence.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => stopSequence.StopSequence(ct), stopSequence.CancellationTokenSource.Token, TimeSpan.FromSeconds(1));
-            videoDownload.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => videoDownload.DownloadVideos(ct), videoDownload.CancellationTokenSource.Token, TimeSpan.FromMinutes(15));
+            videoDownload.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => videoDownload.DownloadVideos(ct), videoDownload.CancellationTokenSource.Token, TimeSpan.FromMinutes(10));
             programmingGenerator.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => programmingGenerator.CreateProgrammingFile(ct), programmingGenerator.CancellationTokenSource.Token, TimeSpan.FromDays(1));
-            nextSequenceComposer.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => nextSequenceComposer.CreateNextSequenceFile(ct), programmingGenerator.CancellationTokenSource.Token, TimeSpan.FromMinutes(1));
+            nextSequenceComposer.NeverEndingTask = RecurringTaskFactory.CreateRecurringTask((now, ct) => nextSequenceComposer.CreateNextSequenceFile(ct), nextSequenceComposer.CancellationTokenSource.Token, TimeSpan.FromMinutes(1));
         }
 
         private void StartTasks()

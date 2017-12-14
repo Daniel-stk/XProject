@@ -21,7 +21,9 @@ namespace Caroto.Tools
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message);
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + "On ReadJson Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
                 return DateTime.Now;
             }
         }
@@ -44,7 +46,9 @@ namespace Caroto.Tools
             }
             catch(Exception ex)
             {
-                Console.WriteLine(ex.Message + "On JSON write");
+#if DEBUG
+                FileLogger.Instance.Log("Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + "On WriteJson Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
             }
         }
     }

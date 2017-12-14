@@ -38,7 +38,7 @@
             this.videosAlmacenados = new System.Windows.Forms.TextBox();
             this.Ver = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.proximaReproduccion = new System.Windows.Forms.TextBox();
             this.Play = new System.Windows.Forms.Button();
             this.totalRerpoduccionLbl = new System.Windows.Forms.Label();
             this.tiempoTotal = new System.Windows.Forms.TextBox();
@@ -81,6 +81,7 @@
             this.Actualizar.TabIndex = 3;
             this.Actualizar.Text = "Actualizar";
             this.Actualizar.UseVisualStyleBackColor = true;
+            this.Actualizar.Click += new System.EventHandler(this.Actualizar_Click);
             // 
             // videosAlacenadosLbl
             // 
@@ -120,13 +121,13 @@
             this.label1.TabIndex = 7;
             this.label1.Text = "Proxima reproduccion -";
             // 
-            // textBox1
+            // proximaReproduccion
             // 
-            this.textBox1.Location = new System.Drawing.Point(182, 211);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(138, 20);
-            this.textBox1.TabIndex = 8;
+            this.proximaReproduccion.Location = new System.Drawing.Point(182, 211);
+            this.proximaReproduccion.Name = "proximaReproduccion";
+            this.proximaReproduccion.ReadOnly = true;
+            this.proximaReproduccion.Size = new System.Drawing.Size(138, 20);
+            this.proximaReproduccion.TabIndex = 8;
             // 
             // Play
             // 
@@ -174,7 +175,7 @@
             this.Controls.Add(this.tiempoTotal);
             this.Controls.Add(this.totalRerpoduccionLbl);
             this.Controls.Add(this.Play);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.proximaReproduccion);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.Ver);
             this.Controls.Add(this.videosAlmacenados);
@@ -203,7 +204,7 @@
         private System.Windows.Forms.TextBox videosAlmacenados;
         private System.Windows.Forms.Button Ver;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox proximaReproduccion;
         private System.Windows.Forms.Button Play;
         private System.Windows.Forms.Label totalRerpoduccionLbl;
         private System.Windows.Forms.TextBox tiempoTotal;

@@ -69,5 +69,17 @@ namespace Caroto.Properties {
                 this["LastUpdate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string NextSequence {
+            get {
+                return ((string)(this["NextSequence"]));
+            }
+            set {
+                this["NextSequence"] = value;
+            }
+        }
     }
 }

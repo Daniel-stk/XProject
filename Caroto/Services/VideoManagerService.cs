@@ -44,6 +44,25 @@ namespace Caroto.Services
             }
         }
 
+        public async Task<List<VideoDataResponse>> GetVideoDownloadListData(string apiKey,string identidad)
+        {
+            var dto = new AuthorizationDto() { ApiKey = apiKey, Identidad = identidad };
+            var videoData = await _gateway.CreateVideoDownloadList(dto);
+            if (videoData == null)
+            {
+                throw new NullResponseException("No hubo respuesta exitosa de parte del servidor");
+            }
+
+            if (videoData.Any())
+            {
+                return videoData;
+            }
+            else
+            {
+                throw new NullResponseException("Creación de lista de videos fallida");
+            }
+        }
+
         public int GetCountVideosOnFolder()
         {
             if(Directory.Exists(CarotoSettings.Default.VideoFolder + @"\videos\"))
@@ -61,10 +80,10 @@ namespace Caroto.Services
                 {
                     Directory.CreateDirectory(CarotoSettings.Default.VideoFolder + @"\videos\");
                 }
-                if(!File.Exists(CarotoSettings.Default.VideoFolder + @"\videos\" + video.Name + ".mp4"))
+                if(!File.Exists(CarotoSettings.Default.VideoFolder + @"\videos\" + video.File + ".mp4"))
                 {
                     var uri = new Uri(url + video.File);
-                    var success = await _gateway.DownloadVideo(uri, CarotoSettings.Default.VideoFolder + @"\videos\" + video.Name + ".mp4");
+                    var success = await _gateway.DownloadVideo(uri, CarotoSettings.Default.VideoFolder + @"\videos\" + video.File + ".mp4");
                     if (success)
                     {
                         Console.WriteLine("Descarga éxitosa - " + video.Name);
@@ -84,7 +103,7 @@ namespace Caroto.Services
         {
             foreach(var downloadedVideo in downloadedVideos)
             {
-                videosOnFolder = videosOnFolder.Where(video => !video.Equals(CarotoSettings.Default.VideoFolder +"\\videos\\"+ downloadedVideo.Name + ".mp4") ).ToArray();
+                videosOnFolder = videosOnFolder.Where(video => !video.Equals(CarotoSettings.Default.VideoFolder +"\\videos\\"+ downloadedVideo.File + ".mp4") ).ToArray();
             }
             if (videosOnFolder.Any())
             {

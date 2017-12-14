@@ -24,8 +24,8 @@ namespace Caroto.DomainObjects
         [JsonProperty("end_time")]
         public DateTime EndTime { get; set; }
 
-        [JsonProperty("total_duration_in_seconds")]
-        public string TotalDurationInSeconds { get; set; }
+        [JsonProperty("total_duration")]
+        public string TotalSequenceDuration { get; set; }
 
         [JsonConverter(typeof(BooleanConverter))]
         [JsonProperty("on_loop")]

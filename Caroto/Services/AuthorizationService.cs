@@ -2,9 +2,12 @@
 using Caroto.Exceptions;
 using Caroto.RecurringTasks;
 using Caroto.RecurringTasks.Tasks;
+using Caroto.Tools;
 using DTO;
 using Gateway;
 using System;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 
@@ -65,20 +68,47 @@ namespace Caroto.Services
 
         public void Disconnect()
         {
-            CarotoSettings.Default.AccessToken = "";
-            CarotoSettings.Default.BaseFolder = "";
-            Properties.Settings.Default.ApiKey = "";
-            Properties.Settings.Default.Identidad = "";
-            Properties.Settings.Default.IsActivated = false;
-
             MessageHub.Instance.StopRecurringTask();
-            TestSender.Instance.StopRecurringTask();
             TriggerSequenceTask.Instance.StopRecurringTask();
             StopSequenceTask.Instance.StopRecurringTask();
             VideoDownloadListComposerTask.Instance.StopRecurringTask();
+            VideoDownloadTask.Instance.StopRecurringTask();
+            GenerateProgrammingTask.Instance.StopRecurringTask();
+            ComposeNextSequenceTask.Instance.StopRecurringTask();
 
+            CarotoSettings.Default.VideoFolder = "";
+            CarotoSettings.Default.ProgrammingFolder = "";
+            CarotoSettings.Default.VideoFolder = "";
+            CarotoSettings.Default.NextSequenceFolder = "";
+            CarotoSettings.Default.TotalTime = new TimeSpan(0, 0, 0);
+
+            Properties.Settings.Default.NextSequence = "";
+            Properties.Settings.Default.LastUpdate = new DateTime();
+            Properties.Settings.Default.ApiKey = "";
+            Properties.Settings.Default.Identidad = "";
+            Properties.Settings.Default.IsActivated = false;
+            CarotoSettings.Default.AccessToken = "";
+
+          
+
+            try
+            { 
+                Directory.Delete(CarotoSettings.Default.BaseFolder, true);
+            }
+            catch(Exception ex)
+            {
+#if DEBUG
+                FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + "On Disconnect Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
+            }
+
+#if DEBUG
+            CarotoSettings.Default.LogFolder = "";
+#endif
+            CarotoSettings.Default.BaseFolder = "";
             CarotoSettings.Default.Save();
             Properties.Settings.Default.Save();
+
         }
     }
 }

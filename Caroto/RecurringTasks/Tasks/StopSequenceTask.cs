@@ -44,7 +44,9 @@ namespace Caroto.RecurringTasks.Tasks
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+#if DEBUG
+                FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
             }
         }   
     }

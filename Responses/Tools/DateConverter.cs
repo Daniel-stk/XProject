@@ -43,8 +43,6 @@ namespace Caroto.Tools
                 {
                     dateTime = DateTime.Now;
                 }
-
-                Console.WriteLine(dateTime.ToString(@"yyyy-MM-dd"));
                 writer.WriteValue(dateTime.ToString(@"yyyy-MM-dd"));
             }
             catch (Exception ex)

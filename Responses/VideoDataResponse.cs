@@ -21,6 +21,7 @@ namespace Responses
         [JsonProperty("thumbnail")]
         public string Thumbnail { get; set; }
 
-        public int Duration { get; set; }
+        [JsonProperty("duracion")]
+        public float Duration { get; set; }
     }
 }

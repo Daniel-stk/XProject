@@ -12,5 +12,6 @@ namespace Caroto.DomainObjects
         public IWMPPlaylist PlayList { get; set; }
         public bool OnLoop { get; set; }
         public string SequenceName { get; set; }
+        public string TotalSequenceDuration { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace Caroto.EventHandlers
     public class TriggerSequenceEventArgs : EventArgs
     {
         private List<string> _playlist;
-        private string _totalDurationInSeconds;
+        private string _totalSequenceDuration;
         private string _sequenceName;
         private bool _onLoop;
 
@@ -19,7 +19,7 @@ namespace Caroto.EventHandlers
 
             _playlist = playlist;
             _sequenceName = "default_sequence";
-            _totalDurationInSeconds = "500";
+            _totalSequenceDuration = "500";
             _onLoop = onLoop;
         }
 
@@ -35,7 +35,7 @@ namespace Caroto.EventHandlers
             }
 
             _playlist = playlist;
-            _totalDurationInSeconds = totalDurationInSeconds;
+            _totalSequenceDuration = totalDurationInSeconds;
             _sequenceName = "default_sequence";
             _onLoop = onLoop;
         }
@@ -55,13 +55,13 @@ namespace Caroto.EventHandlers
             }
 
             _playlist = playlist;
-            _totalDurationInSeconds = totalDurationInSeconds;
+            _totalSequenceDuration = totalDurationInSeconds;
             _sequenceName = sequenceName;
             _onLoop = onLoop;
         }
 
         public List<string> PlayList { get { return _playlist; } }
-        public string TotalDurationInSeconds { get { return _totalDurationInSeconds; } }
+        public string TotalSequenceDuration { get { return _totalSequenceDuration; } }
         public string SequenceName { get { return _sequenceName; } }
         public bool OnLoop { get { return _onLoop; } }
     }

@@ -1,7 +1,10 @@
 ﻿using AxWMPLib;
+using Caroto.DomainObjects;
+using Caroto.Tools;
 using Gateway;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,6 +45,15 @@ namespace Caroto.Services
                 playlist.appendItem(media);
             }
             return playlist;
+        }
+
+        public Sequence GetNextSequence()
+        {
+            if(File.Exists(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json"))
+            {
+               return JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
+            }
+            return null;
         }
     }
 }

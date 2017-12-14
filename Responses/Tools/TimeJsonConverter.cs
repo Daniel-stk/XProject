@@ -39,8 +39,6 @@ namespace Caroto.Tools
                 {
                     dateTime = DateTime.Now;
                 }
-
-                Console.WriteLine(dateTime.ToString(@"HH:mm:ss"));
                 writer.WriteValue(dateTime.ToString(@"HH:mm:ss"));
             }
             catch(Exception ex)

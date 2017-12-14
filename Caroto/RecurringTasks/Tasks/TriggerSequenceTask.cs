@@ -39,7 +39,9 @@ namespace Caroto.RecurringTasks.Tasks
             }
             catch (Exception ex)
             {
-                Console.Write(ex.Message + "On TriggerSequencueTask");
+#if DEBUG
+                FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
             }
         }
     }

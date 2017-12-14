@@ -63,7 +63,7 @@ namespace Gateway
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        throw ex;
                     }
                 }
                 else
@@ -75,7 +75,7 @@ namespace Gateway
                     }
                     catch(Exception ex)
                     {
-                        Console.WriteLine(ex.Message);
+                        throw ex;
                     }
                 }
             }

@@ -46,12 +46,16 @@ namespace Caroto.RecurringTasks.Tasks
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+#if DEBUG
+                    FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+#endif
                 }
             }
             else
             {
-                Console.WriteLine("Lista de videos a descargar aun no esta generada");
+#if DEBUG
+                FileLogger.Instance.Log("Origen -" + GetType().ToString() + "Mensaje - Lista de videos a descargar aun no esta generada " + "Fecha - " + DateTime.Now.ToString(), LogType.Info);
+#endif
             }
         }
     }

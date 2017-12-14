@@ -54,7 +54,7 @@ namespace Gateway
                 }
                 catch(Exception ex)
                 {
-                    Console.WriteLine("Descarga fallida: Archivo - " + video);
+                    Console.WriteLine("Descarga fallida: Archivo - " + video+ " Exception - "+ex.Message );
                     return false;
                 }
             }

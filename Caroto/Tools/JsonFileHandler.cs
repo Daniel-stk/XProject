@@ -1,5 +1,4 @@
-﻿using Gateway;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
@@ -7,7 +6,7 @@ namespace Caroto.Tools
 {
     public class JsonFileHandler
     {
-        private static object SyncRoot = new object();
+        private static readonly object SyncRoot = new object();
         public static T ReadJsonFile<T>(string path) where T : class 
         {
             lock (SyncRoot)
