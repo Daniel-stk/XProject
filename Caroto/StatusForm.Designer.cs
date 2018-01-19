@@ -43,6 +43,9 @@
             this.totalRerpoduccionLbl = new System.Windows.Forms.Label();
             this.tiempoTotal = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.presentation = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // Desconectar
@@ -167,11 +170,32 @@
             this.notifyIcon.Visible = true;
             this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(200, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(50, 43);
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
+            // 
+            // presentation
+            // 
+            this.presentation.AutoSize = true;
+            this.presentation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.presentation.Location = new System.Drawing.Point(121, 59);
+            this.presentation.Name = "presentation";
+            this.presentation.Size = new System.Drawing.Size(206, 13);
+            this.presentation.TabIndex = 13;
+            this.presentation.Text = "Servicios De Comunicación Interna";
+            // 
             // StatusForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(459, 461);
+            this.Controls.Add(this.presentation);
+            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.tiempoTotal);
             this.Controls.Add(this.totalRerpoduccionLbl);
             this.Controls.Add(this.Play);
@@ -189,6 +213,7 @@
             this.MinimumSize = new System.Drawing.Size(475, 500);
             this.Name = "StatusForm";
             this.Text = "Control de estado";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -209,5 +234,7 @@
         private System.Windows.Forms.Label totalRerpoduccionLbl;
         private System.Windows.Forms.TextBox tiempoTotal;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label presentation;
     }
 }

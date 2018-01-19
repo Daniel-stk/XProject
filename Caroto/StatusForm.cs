@@ -4,6 +4,8 @@ using Caroto.Services;
 using Caroto.Tools;
 using Gateway;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
@@ -21,7 +23,7 @@ namespace Caroto
         private delegate void ProgrammingUpdatedCallback(DateTime lastUpdate);
         private delegate void NextSequenceCreatedCallback(string text);
         private delegate void UpdateTotalTimeCallback();
-
+      
         public StatusForm()
         {
             InitializeComponent();
@@ -57,6 +59,7 @@ namespace Caroto
                 CarotoSettings.Default.Save();
             }
             tiempoTotal.Text = CarotoSettings.Default.TotalTime.ToString();
+        
         }
 
         private void Desconectar_Click(object sender, EventArgs e)
@@ -71,12 +74,12 @@ namespace Caroto
         private void Play_Click(object sender, EventArgs e)
         {
            if(_mediaPlayerWindow.ReproduccionManual())
-                Hide();
+               Hide();
         }
 
         private void MediaPlayerWindowClose(object sender, EventArgs e)
         {
-            //Show();
+            notifyIcon.Visible = true;
             CreateMediaPlayerWindow();
         }
 

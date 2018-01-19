@@ -73,7 +73,7 @@ namespace Caroto.RecurringTasks
                 sequence = JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
                 JsonFileHandler.DeleteJsonFile(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
                 JsonFileHandler.WriteJsonFile(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json", sequence);
-                TriggerSequenceEventArgs args = new TriggerSequenceEventArgs(sequence.PlayList, sequence.TotalSequenceDuration, sequence.SequenceName ,sequence.OnLoop);
+                TriggerSequenceEventArgs args = new TriggerSequenceEventArgs(sequence);
                 TriggerSequenceEvent(this, args);
             }
             catch(Exception ex)

@@ -7,7 +7,7 @@ namespace Caroto.Tools
     public class FileLogger : Logger
     {
         private static readonly Lazy<FileLogger> _instance = new Lazy<FileLogger>(() => new FileLogger());
-        private static readonly object SyncRoot = new object();
+        private static object SyncRoot = new object();
         private FileLogger() { }
 
         public static FileLogger Instance { get { return _instance.Value; } }

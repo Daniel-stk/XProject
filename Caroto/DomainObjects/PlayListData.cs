@@ -13,5 +13,7 @@ namespace Caroto.DomainObjects
         public bool OnLoop { get; set; }
         public string SequenceName { get; set; }
         public string TotalSequenceDuration { get; set; }
+        public DateTime TimeToPlay { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace Caroto.RecurringTasks.Tasks
             catch(Exception ex)
             {
 #if DEBUG
-                FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + "Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
+                FileLogger.Instance.Log("Origen -" + GetType().ToString() + " Tipo - " + ex.GetType().ToString() + " Mensaje - " + ex.Message + " Fecha - " + DateTime.Now.ToString(), LogType.Error);
 #endif
             }
         }

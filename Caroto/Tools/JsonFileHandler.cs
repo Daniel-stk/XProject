@@ -6,7 +6,7 @@ namespace Caroto.Tools
 {
     public class JsonFileHandler
     {
-        private static readonly object SyncRoot = new object();
+        private static object SyncRoot = new object();
         public static T ReadJsonFile<T>(string path) where T : class 
         {
             lock (SyncRoot)

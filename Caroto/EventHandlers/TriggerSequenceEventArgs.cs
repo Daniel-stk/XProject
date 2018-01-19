@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caroto.DomainObjects;
+using System;
 using System.Collections.Generic;
 
 namespace Caroto.EventHandlers
@@ -9,6 +10,7 @@ namespace Caroto.EventHandlers
         private string _totalSequenceDuration;
         private string _sequenceName;
         private bool _onLoop;
+        private Sequence _sequence;
 
         public TriggerSequenceEventArgs(List<string> playlist,bool onLoop)
         {
@@ -60,9 +62,21 @@ namespace Caroto.EventHandlers
             _onLoop = onLoop;
         }
 
+        public TriggerSequenceEventArgs(Sequence sequence)
+        {
+            if(sequence == null)
+            {
+                throw new ArgumentNullException("sequence contiene valor nulo");
+            }
+
+            _sequence = sequence;
+        }
+
         public List<string> PlayList { get { return _playlist; } }
         public string TotalSequenceDuration { get { return _totalSequenceDuration; } }
         public string SequenceName { get { return _sequenceName; } }
         public bool OnLoop { get { return _onLoop; } }
+        public Sequence Sequence { get { return _sequence; } }
+
     }
 }

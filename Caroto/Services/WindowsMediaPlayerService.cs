@@ -39,9 +39,9 @@ namespace Caroto.Services
         {
             var playlist = _windowsMediaPlayer.playlistCollection.newPlaylist("currentPlayList");
             IWMPMedia media;
-            foreach(var video in videos)
+            foreach (var video in videos)
             {
-                media = _windowsMediaPlayer.newMedia(CarotoSettings.Default.VideoFolder+@"\videos\"+video);
+                media = _windowsMediaPlayer.newMedia(CarotoSettings.Default.VideoFolder + @"\videos\" + video);
                 playlist.appendItem(media);
             }
             return playlist;
@@ -49,11 +49,26 @@ namespace Caroto.Services
 
         public Sequence GetNextSequence()
         {
-            if(File.Exists(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json"))
+            if (File.Exists(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json"))
             {
-               return JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
+                return JsonFileHandler.ReadJsonFile<Sequence>(CarotoSettings.Default.NextSequenceFolder + @"\nextPlaylist.json");
             }
             return null;
+        }
+
+        public bool CreateCurrentSequenceJson(PlayListData playListData)
+        {
+            try
+            { 
+                var sequence = new Sequence() { SequenceName = playListData.SequenceName, TimeToPlay = playListData.TimeToPlay, EndTime = playListData.EndTime,PlayList = new List<string>(),OnLoop = playListData.OnLoop,TotalSequenceDuration = playListData.TotalSequenceDuration };
+                JsonFileHandler.WriteJsonFile(CarotoSettings.Default.NextSequenceFolder + @"\currentPlaylist.json",sequence);
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
         }
     }
 }
