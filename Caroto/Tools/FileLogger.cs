@@ -19,7 +19,7 @@ namespace Caroto.Tools
                 case LogType.Info:
                     lock (SyncRoot)
                     {
-                        using (var streamWriter = new StreamWriter(CarotoSettings.Default.LogFolder + @"\Information.txt"))
+                        using (var streamWriter = new StreamWriter(CarotoSettings.Default.LogFolder + @"\Information.txt",true))
                         {
                             streamWriter.WriteLine(message);
                             streamWriter.Close();
@@ -31,7 +31,7 @@ namespace Caroto.Tools
                 case LogType.Error:
                     lock (SyncRoot)
                     {
-                        using (var streamWriter = new StreamWriter(CarotoSettings.Default.LogFolder + @"\Exceptions.txt"))
+                        using (var streamWriter = new StreamWriter(CarotoSettings.Default.LogFolder + @"\Exceptions.txt",true))
                         {
                             streamWriter.WriteLine(message);
                             streamWriter.Close();

@@ -29,9 +29,10 @@ namespace Caroto
         {
             try
             {
-                if(!string.IsNullOrEmpty(apiKey.Text) && !string.IsNullOrEmpty(identidad.Text))
+                if (!string.IsNullOrEmpty(apiKey.Text) && !string.IsNullOrEmpty(identidad.Text))
                 {
-                   await _authService.ExecuteAuthorization(apiKey.Text, identidad.Text);
+                    Iniciar.Enabled = false;
+                    await _authService.ExecuteAuthorization(apiKey.Text, identidad.Text);
                 }
                 else
                 {
@@ -59,6 +60,7 @@ namespace Caroto
                 {
                     throw ex;
                 }
+                Iniciar.Enabled = true;
             }
             if (Properties.Settings.Default.IsActivated)
             {

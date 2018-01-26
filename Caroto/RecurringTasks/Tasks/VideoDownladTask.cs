@@ -14,6 +14,7 @@ using System.Threading.Tasks.Dataflow;
 namespace Caroto.RecurringTasks.Tasks
 {
     public class VideoDownloadTask : RecurringTask
+
     {
         private static readonly Lazy<VideoDownloadTask> _instance = new Lazy<VideoDownloadTask>(() => new VideoDownloadTask());
         private AuthorizationService _authService;
